@@ -1,7 +1,7 @@
 """This stores information about the current state. It is also responsible for valid moves
 and keeps move log."""
 
-def GameState():
+class GameState():
 	def __init__(self):
 		# board is an 8x8 2D list and each entry represents the piece present at that square
 		# r --> rook
