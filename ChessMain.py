@@ -63,11 +63,21 @@ def main():
 			elif e.type == p.MOUSEBUTTONDOWN:
 				mouseClicked = not(mouseClicked)
 				if mouseClicked:
+					# we are storing which piece we intend to move.
 					x, y = p.mouse.get_pos()[1]//SQ_SIZE, p.mouse.get_pos()[0]//SQ_SIZE
 					piece = (gs.board[x][y])
 				else:
-					gs.board[p.mouse.get_pos()[1]//SQ_SIZE][p.mouse.get_pos()[0]//SQ_SIZE] = piece
-					gs.board[x][y] = "-"
+					# the square to which we want the piece to move
+					x1, y1 = p.mouse.get_pos()[1]//SQ_SIZE, p.mouse.get_pos()[0]//SQ_SIZE
+					# if the new square is same as old square, we are not changing anything.
+					# if the old square has no piece in it, then we are not changing anything.
+					
+					# otherwise, we are putting the piece that was present in the old square 
+					# at the new square and empty the old square so as to make it look like
+					# the piece moved from old square to new square.
+					if (x1, y1) != (x, y) and piece != "-":
+						gs.board[x1][y1] = piece
+						gs.board[x][y] = "-"
 		drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		p.display.flip()
