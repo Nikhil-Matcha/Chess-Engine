@@ -74,9 +74,12 @@ def main():
 					# we are storing which piece we intend to move.
 					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					p = (gs.board[x][y])
-					piece = getPiece(p)
-					if piece[1] == "Pawn":
-						print(gs.getAllPawnMoves(piece[0], x, y))
+					if p != "-":
+						piece = getPiece(p)
+						if piece[1] == "Pawn":
+							validMoves = gs.getAllPawnMoves(piece[0], x, y)
+						elif piece[1] == "Rook":
+							validMoves = gs.getAllRookMoves(piece[0], x, y)
 
 				else:
 					# the square to which we want the piece to move
@@ -87,7 +90,7 @@ def main():
 					# otherwise, we are putting the piece that was present in the old square 
 					# at the new square and empty the old square so as to make it look like
 					# the piece moved from old square to new square.
-					if (x1, y1) != (x, y) and p != "-":
+					if (x1, y1) != (x, y) and p != "-" and (x1, y1) in validMoves:
 						gs.board[x1][y1] = p
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")

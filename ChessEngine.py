@@ -26,25 +26,31 @@ class GameState():
 		self.moveLog = []
 
 
-	def getAllPawnMoves(self, turn, row, col):
-		validMoves = [(row-1, col) if turn == "white" else (row+1, col)]
-		if turn == "white" and row == 6:
+	def getAllPawnMoves(self, color, row, col):
+		validMoves = [(row-1, col) if color == "white" else (row+1, col)]
+		if color == "white" and row == 6:
 			validMoves.append((row-2, col))
-		elif turn == "black" and row == 1:
+		elif color == "black" and row == 1:
 			validMoves.append((row+2, col))
 		return validMoves
 
-	def getAllRookMoves(self, turn, row, col):
+	def getAllRookMoves(self, color, row, col):
+		validMoves = []
+		for i in range(len(self.board)):
+			if i != row:
+				validMoves.append((i, col))
+			if i != col:
+				validMoves.append((row, i))
+		return validMoves
+
+	def getAllBishopMoves(self, color, row, col):
 		pass
 
-	def getAllBishopMoves(self, turn, row, col):
+	def getAllQueenMoves(self, color, row, col):
 		pass
 
-	def getAllQueenMoves(self, turn, row, col):
+	def getAllKingMoves(self, color, row, col):
 		pass
 
-	def getAllKingMoves(self, turn, row, col):
-		pass
-
-	def getAllKnightMoves(self, turn, row, col):
+	def getAllKnightMoves(self, color, row, col):
 		pass
