@@ -24,3 +24,27 @@ class GameState():
 		]
 		self.whiteToMove = True
 		self.moveLog = []
+
+
+	def getAllPawnMoves(self, turn, row, col):
+		validMoves = [(row-1, col) if turn == "white" else (row+1, col)]
+		if turn == "white" and row == 6:
+			validMoves.append((row-2, col))
+		elif turn == "black" and row == 1:
+			validMoves.append((row+2, col))
+		return validMoves
+
+	def getAllRookMoves(self, turn, row, col):
+		pass
+
+	def getAllBishopMoves(self, turn, row, col):
+		pass
+
+	def getAllQueenMoves(self, turn, row, col):
+		pass
+
+	def getAllKingMoves(self, turn, row, col):
+		pass
+
+	def getAllKnightMoves(self, turn, row, col):
+		pass
