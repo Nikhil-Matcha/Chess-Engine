@@ -54,18 +54,21 @@ def main():
 	gs = ChessEngine.GameState()
 	print(gs.board)
 	loadImages()
+	alpha = ["A", "B", "C", "D", "E", "F", "G", "H"]
 	running = True
 	mouseClicked = False
 	while running:
 		for e in p.event.get():
 			if e.type == p.QUIT:
 				running = False
+				print(gs.moveLog)
 			elif e.type == p.MOUSEBUTTONDOWN:
 				mouseClicked = not(mouseClicked)
 				if mouseClicked:
 					# we are storing which piece we intend to move.
 					x, y = p.mouse.get_pos()[1]//SQ_SIZE, p.mouse.get_pos()[0]//SQ_SIZE
 					piece = (gs.board[x][y])
+					# print(x,y)
 				else:
 					# the square to which we want the piece to move
 					x1, y1 = p.mouse.get_pos()[1]//SQ_SIZE, p.mouse.get_pos()[0]//SQ_SIZE
@@ -78,6 +81,8 @@ def main():
 					if (x1, y1) != (x, y) and piece != "-":
 						gs.board[x1][y1] = piece
 						gs.board[x][y] = "-"
+						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
+						gs.moveLog.append((str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1)))
 		drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		p.display.flip()
