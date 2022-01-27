@@ -25,6 +25,14 @@ class GameState():
 		self.whiteToMove = True
 		self.moveLog = []
 
+	# to check whether a square co-ordinates are within the bounds of the board.
+	def isValidSquare(self, r, c):
+		if r>=0 and r<8 and c>=0 and c<8:
+			return True
+		else:
+			return False
+
+	# when given an element of board array, this gives which piece is that and what color is that piece.
 	def getPiece(self, p):
 		pieces = {"p":"Pawn", "r":"Rook", "b":"Bishop", "n":"Knight", "k":"King", "q":"Queen", "-":"Empty"}
 		piece = pieces[p.lower()]
@@ -36,6 +44,7 @@ class GameState():
 			color = "none"
 		return (color, piece)
 
+	# Assuming a pawn is present at (row, col), this will give all the valid moves for the piece.
 	def getAllPawnMoves(self, color, row, col):
 		validMoves = []
 		if color == "white":
@@ -58,6 +67,7 @@ class GameState():
 				validMoves.append((row+1, col+1))
 		return validMoves
 
+	# Assuming a rook is present at (row, col), this will give all the valid moves for the piece.
 	def getAllRookMoves(self, color, row, col):
 		validMoves = []
 		for i in range(row+1, len(self.board)):
@@ -96,21 +106,28 @@ class GameState():
 			else:
 				break
 
-		# for i in range(len(self.board)):
-		# 	if i != row:
-		# 		validMoves.append((i, col))
-		# 	if i != col:
-		# 		validMoves.append((row, i))
 		return validMoves
 
+	# Assuming a bishop is present at (row, col), this will give all the valid moves for the piece.
 	def getAllBishopMoves(self, color, row, col):
 		pass
 
+	# Assuming a queen is present at (row, col), this will give all the valid moves for the piece.
 	def getAllQueenMoves(self, color, row, col):
 		pass
 
+	# Assuming a king is present at (row, col), this will give all the valid moves for the piece.
 	def getAllKingMoves(self, color, row, col):
-		pass
+		validMoves = []
+		for i in range(row-1, row+2):
+			for j in range(col-1, col+2):
+				if self.isValidSquare(i, j):
+					if self.getPiece(self.board[i][j])[0] == color:
+						continue
+					else:
+						validMoves.append((i, j))
+		return validMoves
 
+	# Assuming a knight is present at (row, col), this will give all the valid moves for the piece.
 	def getAllKnightMoves(self, color, row, col):
 		pass

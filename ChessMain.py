@@ -69,13 +69,17 @@ def main():
 					# we are storing which piece we intend to move.
 					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					p = (gs.board[x][y])
-					if p != "-":
-						piece = gs.getPiece(p)
+					piece = gs.getPiece(p)
+					# to check the move order
+					# i.e if it is the very first move, then white should play
+					# else white and black should take turns alternately
+					if p != "-" and ((len(gs.moveLog)==0 and piece[0] == "white") or (len(gs.moveLog) != 0 and piece[0] != gs.moveLog[-1][0])):
 						if piece[1] == "Pawn":
 							validMoves = gs.getAllPawnMoves(piece[0], x, y)
 						elif piece[1] == "Rook":
 							validMoves = gs.getAllRookMoves(piece[0], x, y)
-
+						elif piece[1] == "King":
+							validMoves = gs.getAllKingMoves(piece[0], x, y)
 				else:
 					# the square to which we want the piece to move
 					x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
@@ -89,7 +93,7 @@ def main():
 						gs.board[x1][y1] = p
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
-						gs.moveLog.append((str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1)))
+						gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 		drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
