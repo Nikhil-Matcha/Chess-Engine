@@ -60,11 +60,47 @@ class GameState():
 
 	def getAllRookMoves(self, color, row, col):
 		validMoves = []
-		for i in range(len(self.board)):
-			if i != row:
+		for i in range(row+1, len(self.board)):
+			if self.board[i][col] == "-":
 				validMoves.append((i, col))
-			if i != col:
-				validMoves.append((row, i))
+			elif self.getPiece(self.board[i][col])[0] != color:
+				validMoves.append((i, col))
+				break
+			else:
+				break
+
+		for i in range(row-1, -1, -1):
+			if self.board[i][col] == "-":
+				validMoves.append((i, col))
+			elif self.getPiece(self.board[i][col])[0] != color:
+				validMoves.append((i, col))
+				break
+			else:
+				break
+
+		for j in range(col+1, len(self.board)):
+			if self.board[row][j] == "-":
+				validMoves.append((row, j))
+			elif self.getPiece(self.board[row][j])[0] != color:
+				validMoves.append((row, j))
+				break
+			else:
+				break
+
+		for j in range(col-1, -1, -1):
+			if self.board[row][j] == "-":
+				validMoves.append((row, j))
+			elif self.getPiece(self.board[row][j])[0] != color:
+				validMoves.append((row, j))
+				break
+			else:
+				break
+
+		# for i in range(len(self.board)):
+		# 	if i != row:
+		# 		validMoves.append((i, col))
+		# 	if i != col:
+		# 		validMoves.append((row, i))
 		return validMoves
 
 	def getAllBishopMoves(self, color, row, col):
