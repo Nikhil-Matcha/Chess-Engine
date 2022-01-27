@@ -25,13 +25,37 @@ class GameState():
 		self.whiteToMove = True
 		self.moveLog = []
 
+	def getPiece(self, p):
+		pieces = {"p":"Pawn", "r":"Rook", "b":"Bishop", "n":"Knight", "k":"King", "q":"Queen", "-":"Empty"}
+		piece = pieces[p.lower()]
+		if p.islower():
+			color = "black"
+		elif p.isupper():
+			color = "white"
+		else:
+			color = "none"
+		return (color, piece)
 
 	def getAllPawnMoves(self, color, row, col):
-		validMoves = [(row-1, col) if color == "white" else (row+1, col)]
-		if color == "white" and row == 6:
-			validMoves.append((row-2, col))
-		elif color == "black" and row == 1:
-			validMoves.append((row+2, col))
+		validMoves = []
+		if color == "white":
+			if self.getPiece(self.board[row-1][col])[1] == "Empty":
+				validMoves.append((row-1, col))
+				if row == 6 and self.getPiece(self.board[row-2][col])[1] == "Empty":
+					validMoves.append((row-2, col))
+			if self.getPiece(self.board[row-1][col-1])[0] == "black":
+				validMoves.append((row-1, col-1))
+			if self.getPiece(self.board[row-1][col+1])[0] == "black":
+				validMoves.append((row-1, col+1))
+		if color == "black":
+			if self.getPiece(self.board[row+1][col])[1] == "Empty":
+				validMoves.append((row+1, col))
+				if row == 1 and self.getPiece(self.board[row+2][col])[1] == "Empty":
+					validMoves.append((row+2, col))
+			if self.getPiece(self.board[row+1][col-1])[0] == "white":
+				validMoves.append((row+1, col-1))
+			if self.getPiece(self.board[row+1][col+1])[0] == "white":
+				validMoves.append((row+1, col+1))
 		return validMoves
 
 	def getAllRookMoves(self, color, row, col):

@@ -45,11 +45,6 @@ def drawPieces(screen, board):
 			if piece != "-":
 				screen.blit(IMAGES[piece], pg.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
-def getPiece(p):
-		pieces = {"p":"Pawn", "r":"Rook", "b":"Bishop", "n":"Knight", "k":"King", "q":"Queen"}
-		piece = pieces[p.lower()]
-		turn = "black" if p.islower() else "white"
-		return (turn, piece)
 
 # Main function
 def main():
@@ -75,7 +70,7 @@ def main():
 					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					p = (gs.board[x][y])
 					if p != "-":
-						piece = getPiece(p)
+						piece = gs.getPiece(p)
 						if piece[1] == "Pawn":
 							validMoves = gs.getAllPawnMoves(piece[0], x, y)
 						elif piece[1] == "Rook":
