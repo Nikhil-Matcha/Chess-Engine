@@ -87,7 +87,13 @@ def main():
 							validMoves = gs.getAllBishopMoves(piece[0], x, y)
 						else:
 							validMoves = gs.getAllQueenMoves(piece[0], x, y)
-					print(validMoves)
+					print("current square: " + str(alpha[y]) + str(8-x))
+					print("selected piece: " + piece[0] + " " + piece[1])
+					print("possible moves are: ", end="")
+					sq = [str(alpha[vm[1]]) + str(8-vm[0]) for vm in validMoves]
+					for el in sq:
+						print(el, end=" ")
+					print()
 				else:
 					# the square to which we want the piece to move
 					x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
