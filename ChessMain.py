@@ -70,6 +70,7 @@ def main():
 					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					p = (gs.board[x][y])
 					piece = gs.getPiece(p)
+					validMoves = []
 					# to check the move order
 					# i.e if it is the very first move, then white should play
 					# else white and black should take turns alternately
@@ -80,6 +81,13 @@ def main():
 							validMoves = gs.getAllRookMoves(piece[0], x, y)
 						elif piece[1] == "King":
 							validMoves = gs.getAllKingMoves(piece[0], x, y)
+						elif piece[1] == "Knight":
+							validMoves = gs.getAllKnightMoves(piece[0], x, y)
+						elif piece[1] == "Bishop":
+							validMoves = gs.getAllBishopMoves(piece[0], x, y)
+						else:
+							validMoves = gs.getAllQueenMoves(piece[0], x, y)
+					print(validMoves)
 				else:
 					# the square to which we want the piece to move
 					x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE

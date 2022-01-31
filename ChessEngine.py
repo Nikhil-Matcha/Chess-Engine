@@ -110,11 +110,79 @@ class GameState():
 
 	# Assuming a bishop is present at (row, col), this will give all the valid moves for the piece.
 	def getAllBishopMoves(self, color, row, col):
-		pass
+		validMoves = []
+		i, j = row, col
+		while self.isValidSquare(i, j):
+			i -= 1
+			j -= 1
+			if self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == "none":
+				validMoves.append((i, j))
+			elif self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == color:
+				i, j = row, col
+				break
+			elif self.isValidSquare(i, j):
+				validMoves.append((i, j))
+				i, j = row, col
+				break
+			else:
+				i, j = row, col
+				break
+
+		while self.isValidSquare(i, j):
+			i -= 1
+			j += 1
+			if self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == "none":
+				validMoves.append((i, j))
+			elif self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == color:
+				i, j = row, col
+				break
+			elif self.isValidSquare(i, j):
+				validMoves.append((i, j))
+				i, j = row, col
+				break
+			else:
+				i, j = row, col
+				break
+
+		while self.isValidSquare(i, j):
+			i += 1
+			j -= 1
+			if self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == "none":
+				validMoves.append((i, j))
+			elif self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == color:
+				i, j = row, col
+				break
+			elif self.isValidSquare(i, j):
+				validMoves.append((i, j))
+				i, j = row, col
+				break
+			else:
+				i, j = row, col
+				break
+
+		while self.isValidSquare(i, j):
+			i += 1
+			j += 1
+			if self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == "none":
+				validMoves.append((i, j))
+			elif self.isValidSquare(i, j) and self.getPiece(self.board[i][j])[0] == color:
+				i, j = row, col
+				break
+			elif self.isValidSquare(i, j):
+				validMoves.append((i, j))
+				i, j = row, col
+				break
+			else:
+				i, j = row, col
+				break
+
+		return validMoves
+
 
 	# Assuming a queen is present at (row, col), this will give all the valid moves for the piece.
 	def getAllQueenMoves(self, color, row, col):
-		pass
+		validMoves = self.getAllRookMoves(color, row, col) + self.getAllBishopMoves(color, row, col)
+		return validMoves
 
 	# Assuming a king is present at (row, col), this will give all the valid moves for the piece.
 	def getAllKingMoves(self, color, row, col):
@@ -130,4 +198,9 @@ class GameState():
 
 	# Assuming a knight is present at (row, col), this will give all the valid moves for the piece.
 	def getAllKnightMoves(self, color, row, col):
-		pass
+		possibleMoves = [(row-2, col-1), (row-2, col+1), (row+2, col-1), (row+2, col+1), (row-1, col-2), (row-1, col+2), (row+1, col-2), (row+1, col+2)]
+		validMoves = []
+		for el in possibleMoves:
+			if self.isValidSquare(el[0], el[1]) and self.getPiece(self.board[el[0]][el[1]])[0] != color:
+				validMoves.append(el)
+		return validMoves
