@@ -70,23 +70,33 @@ def main():
 					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					p = (gs.board[x][y])
 					piece = gs.getPiece(p)
+					possibleMoves = []
 					validMoves = []
 					# to check the move order
 					# i.e if it is the very first move, then white should play
 					# else white and black should take turns alternately
 					if p != "-" and ((len(gs.moveLog)==0 and piece[0] == "white") or (len(gs.moveLog) != 0 and piece[0] != gs.moveLog[-1][0])):
 						if piece[1] == "Pawn":
-							validMoves = gs.getAllPawnMoves(piece[0], x, y)
+							possibleMoves = gs.getAllPawnMoves(piece[0], x, y)
 						elif piece[1] == "Rook":
-							validMoves = gs.getAllRookMoves(piece[0], x, y)
+							possibleMoves = gs.getAllRookMoves(piece[0], x, y)
 						elif piece[1] == "King":
-							validMoves = gs.getAllKingMoves(piece[0], x, y)
+							possibleMoves = gs.getAllKingMoves(piece[0], x, y)
 						elif piece[1] == "Knight":
-							validMoves = gs.getAllKnightMoves(piece[0], x, y)
+							possibleMoves = gs.getAllKnightMoves(piece[0], x, y)
 						elif piece[1] == "Bishop":
-							validMoves = gs.getAllBishopMoves(piece[0], x, y)
+							possibleMoves = gs.getAllBishopMoves(piece[0], x, y)
 						else:
-							validMoves = gs.getAllQueenMoves(piece[0], x, y)
+							possibleMoves = gs.getAllQueenMoves(piece[0], x, y)
+					for move in possibleMoves:
+						p1 = gs.board[move[0]][move[1]]
+						gs.board[move[0]][move[1]] = p
+						gs.board[x][y] = "-"
+						if not(gs.isKingInCheck(piece[0])):
+							validMoves.append(move)
+						gs.board[x][y] = p
+						gs.board[move[0]][move[1]] = p1
+					print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
 					print("current square: " + str(alpha[y]) + str(8-x))
 					print("selected piece: " + piece[0] + " " + piece[1])
 					print("possible moves are: ", end="")

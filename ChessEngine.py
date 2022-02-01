@@ -44,26 +44,42 @@ class GameState():
 			color = "none"
 		return (color, piece)
 
+	# This will determine if the king is in check or not.
+	def isKingInCheck(self, color):
+		for i in range(len(self.board)):
+			for j in range(len(self.board[0])):
+				currPiece = self.getPiece(self.board[i][j])
+				if currPiece[0] != "none" and currPiece[0] != color:
+					d = {"Pawn" : self.getAllPawnMoves, "Knight" : self.getAllKnightMoves, 
+					"Bishop" : self.getAllBishopMoves, "Rook" : self.getAllRookMoves, 
+					"Queen" : self.getAllQueenMoves, "King" : self.getAllKingMoves}
+					currMoves = d[currPiece[1]](currPiece[0], i, j)
+					for square in currMoves:
+						p = self.getPiece(self.board[square[0]][square[1]])
+						if p[0] == color and p[1] == "King":
+							return True
+		return False
+
 	# Assuming a pawn is present at (row, col), this will give all the valid moves for the piece.
 	def getAllPawnMoves(self, color, row, col):
 		validMoves = []
 		if color == "white":
-			if self.getPiece(self.board[row-1][col])[1] == "Empty":
+			if self.isValidSquare(row-1, col) and self.getPiece(self.board[row-1][col])[1] == "Empty":
 				validMoves.append((row-1, col))
 				if row == 6 and self.getPiece(self.board[row-2][col])[1] == "Empty":
 					validMoves.append((row-2, col))
-			if self.getPiece(self.board[row-1][col-1])[0] == "black":
+			if self.isValidSquare(row-1, col-1) and self.getPiece(self.board[row-1][col-1])[0] == "black":
 				validMoves.append((row-1, col-1))
-			if self.getPiece(self.board[row-1][col+1])[0] == "black":
+			if self.isValidSquare(row-1, col+1) and self.getPiece(self.board[row-1][col+1])[0] == "black":
 				validMoves.append((row-1, col+1))
 		if color == "black":
-			if self.getPiece(self.board[row+1][col])[1] == "Empty":
+			if self.isValidSquare(row+1, col) and self.getPiece(self.board[row+1][col])[1] == "Empty":
 				validMoves.append((row+1, col))
 				if row == 1 and self.getPiece(self.board[row+2][col])[1] == "Empty":
 					validMoves.append((row+2, col))
-			if self.getPiece(self.board[row+1][col-1])[0] == "white":
+			if self.isValidSquare(row+1, col-1) and self.getPiece(self.board[row+1][col-1])[0] == "white":
 				validMoves.append((row+1, col-1))
-			if self.getPiece(self.board[row+1][col+1])[0] == "white":
+			if self.isValidSquare(row+1, col+1) and self.getPiece(self.board[row+1][col+1])[0] == "white":
 				validMoves.append((row+1, col+1))
 		return validMoves
 
