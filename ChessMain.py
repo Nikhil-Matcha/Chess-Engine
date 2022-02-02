@@ -39,7 +39,29 @@ def drawBoard(screen):
 
 # Draw the images of pieces on the appropriate squares.
 def drawPieces(screen, board):
+	Font = pg.font.SysFont('timesnewroman', 10)
+	colors = [pg.Color("burlywood1"), pg.Color("#8A360F")]
+	A = Font.render("A", False, colors[0], None)
+	B = Font.render("B", False, colors[1] , None)
+	C = Font.render("C", False, colors[0] , None)
+	D = Font.render("D", False, colors[1] , None)
+	E = Font.render("E", False, colors[0], None)
+	F = Font.render("F", False, colors[1], None)
+	G = Font.render("G", False, colors[0], None)
+	H = Font.render("H", False, colors[1], None)
+	one = Font.render("1", False, colors[1], None)
+	two = Font.render("2", False, colors[0], None)
+	three = Font.render("3", False, colors[1], None)
+	four = Font.render("4", False, colors[0], None)
+	five = Font.render("5", False, colors[1], None)
+	six = Font.render("6", False, colors[0], None)
+	seven = Font.render("7", False, colors[1], None)
+	eight = Font.render("8", False, colors[0], None)
+	alphabets = [A, B, C, D, E, F, G, H]
+	numbers = [one, two, three, four, five, six, seven, eight]
 	for r in range(DIMENSION):
+		screen.blit(numbers[r], (502, 450-r*SQ_SIZE))
+		screen.blit(alphabets[r], (3+r*SQ_SIZE, 500))
 		for c in range(DIMENSION):
 			piece = board[r][c]
 			if piece != "-":
