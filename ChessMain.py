@@ -80,6 +80,7 @@ def main():
 	alpha = ["A", "B", "C", "D", "E", "F", "G", "H"]
 	running = True
 	mouseClicked = False
+	drawGameState(screen, gs)
 	while running:
 		for e in pg.event.get():
 			if e.type == pg.QUIT:
@@ -118,6 +119,10 @@ def main():
 							validMoves.append(move)
 						gs.board[x][y] = p
 						gs.board[move[0]][move[1]] = p1
+					drawGameState(screen, gs)
+					for m in validMoves:
+						print(m)
+						pg.draw.circle(screen, (255, 0, 0), [m[1]*SQ_SIZE + 30, m[0]*SQ_SIZE + 30], 5, 0)
 					print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
 					print("current square: " + str(alpha[y]) + str(8-x))
 					print("selected piece: " + piece[0] + " " + piece[1])
@@ -140,7 +145,8 @@ def main():
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
 						gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
-		drawGameState(screen, gs)
+					drawGameState(screen, gs)
+		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
 
