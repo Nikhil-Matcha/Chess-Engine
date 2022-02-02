@@ -121,6 +121,8 @@ def main():
 						gs.board[move[0]][move[1]] = p1
 					drawGameState(screen, gs)
 					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
+					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE+2, x*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
+					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE+4, x*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					for m in validMoves:
 						print(m)
 						pg.draw.circle(screen, (255, 0, 0), [m[1]*SQ_SIZE + 30, m[0]*SQ_SIZE + 30], 5, 0)
@@ -145,8 +147,15 @@ def main():
 						gs.board[x1][y1] = p
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
-						gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
+						gs.moveLog.append((piece[0], ((x, y),(x1, y1))))
+						# gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 					drawGameState(screen, gs)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE, x1*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+2, x*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+2, x1*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+4, x*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
+					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+4, x1*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
