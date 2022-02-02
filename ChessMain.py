@@ -120,6 +120,7 @@ def main():
 						gs.board[x][y] = p
 						gs.board[move[0]][move[1]] = p1
 					drawGameState(screen, gs)
+					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					for m in validMoves:
 						print(m)
 						pg.draw.circle(screen, (255, 0, 0), [m[1]*SQ_SIZE + 30, m[0]*SQ_SIZE + 30], 5, 0)
