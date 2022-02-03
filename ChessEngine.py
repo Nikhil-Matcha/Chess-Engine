@@ -114,8 +114,17 @@ class GameState():
 
 
 	# Returns whether it is stalemate or not
-	def isStaleMate():
-		pass
+	def isStaleMate(self, color):
+		vm = []
+		if not(self.isKingInCheck(color)):
+			for i in range(len(self.board)):
+				for j in range(len(self.board[0])):
+					p = self.board[i][j]
+					vm = self.getValidMoves(i, j)
+					if len(vm) != 0:
+						return False
+			return True
+		return False
 
 	# Assuming a pawn is present at (row, col), this will give all the valid moves for the piece.
 	def getAllPawnMoves(self, color, row, col):

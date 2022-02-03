@@ -143,7 +143,10 @@ def main():
 					print(c)
 					if gs.isCheckMate(c):
 						print("Checkmate!!!")
-						break
+						running = False
+					if gs.isStaleMate(c):
+						print("Stalemate!!!")
+						running = False
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
