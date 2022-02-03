@@ -99,32 +99,14 @@ def main():
 					# i.e if it is the very first move, then white should play
 					# else white and black should take turns alternately
 					if p != "-" and ((len(gs.moveLog)==0 and piece[0] == "white") or (len(gs.moveLog) != 0 and piece[0] != gs.moveLog[-1][0])):
-						if piece[1] == "Pawn":
-							possibleMoves = gs.getAllPawnMoves(piece[0], x, y)
-						elif piece[1] == "Rook":
-							possibleMoves = gs.getAllRookMoves(piece[0], x, y)
-						elif piece[1] == "King":
-							possibleMoves = gs.getAllKingMoves(piece[0], x, y)
-						elif piece[1] == "Knight":
-							possibleMoves = gs.getAllKnightMoves(piece[0], x, y)
-						elif piece[1] == "Bishop":
-							possibleMoves = gs.getAllBishopMoves(piece[0], x, y)
-						else:
-							possibleMoves = gs.getAllQueenMoves(piece[0], x, y)
-					for move in possibleMoves:
-						p1 = gs.board[move[0]][move[1]]
-						gs.board[move[0]][move[1]] = p
-						gs.board[x][y] = "-"
-						if not(gs.isKingInCheck(piece[0])):
-							validMoves.append(move)
-						gs.board[x][y] = p
-						gs.board[move[0]][move[1]] = p1
+						possibleMoves = gs.getPossibleMoves(x, y)
+					validMoves = gs.getValidMoves(x, y)
 					drawGameState(screen, gs)
 					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE+2, x*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
 					pg.draw.rect(screen, pg.Color("green"), pg.Rect(y*SQ_SIZE+4, x*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					for m in validMoves:
-						print(m)
+						# print(m)
 						pg.draw.circle(screen, (255, 0, 0), [m[1]*SQ_SIZE + 30, m[0]*SQ_SIZE + 30], 5, 0)
 					print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
 					print("current square: " + str(alpha[y]) + str(8-x))
@@ -148,6 +130,7 @@ def main():
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
 						gs.moveLog.append((piece[0], ((x, y),(x1, y1))))
+						gs.whiteToMove = not(gs.whiteToMove)
 						# gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 					drawGameState(screen, gs)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
@@ -156,6 +139,11 @@ def main():
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+2, x1*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+4, x*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+4, x1*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
+					c = "white" if gs.whiteToMove else "black"
+					print(c)
+					if gs.isCheckMate(c):
+						print("Checkmate!!!")
+						break
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()

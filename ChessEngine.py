@@ -60,6 +60,63 @@ class GameState():
 							return True
 		return False
 
+	# Get all possible moves for the piece at (x, y)
+	def getPossibleMoves(self, x, y):
+		p = self.board[x][y]
+		piece = self.getPiece(p)
+		possibleMoves = []
+		if piece[1] == "Pawn":
+			possibleMoves = self.getAllPawnMoves(piece[0], x, y)
+		elif piece[1] == "Rook":
+			possibleMoves = self.getAllRookMoves(piece[0], x, y)
+		elif piece[1] == "King":
+			possibleMoves = self.getAllKingMoves(piece[0], x, y)
+		elif piece[1] == "Knight":
+			possibleMoves = self.getAllKnightMoves(piece[0], x, y)
+		elif piece[1] == "Bishop":
+			possibleMoves = self.getAllBishopMoves(piece[0], x, y)
+		else:
+			possibleMoves = self.getAllQueenMoves(piece[0], x, y)
+		return possibleMoves
+
+	# Get all valid moves for the piece at (x, y)
+	def getValidMoves(self, x, y):
+		validMoves = []
+		p = self.board[x][y]
+		piece = self.getPiece(p)
+		possibleMoves = self.getPossibleMoves(x, y)
+		c = "white" if self.whiteToMove else "black"
+		for move in possibleMoves:
+			p1 = self.board[move[0]][move[1]]
+			self.board[move[0]][move[1]] = p
+			self.board[x][y] = "-"
+			if c == piece[0] and not(self.isKingInCheck(piece[0])):
+				validMoves.append(move)
+			self.board[x][y] = p
+			self.board[move[0]][move[1]] = p1
+		return validMoves
+
+	# Returns whether it is checkmate or not
+	def isCheckMate(self, color):
+		vm = []
+		print("King in Check???: " + str(self.isKingInCheck(color)))
+		if self.isKingInCheck(color):
+			for i in range(len(self.board)):
+				for j in range(len(self.board[0])):
+					p = self.board[i][j]
+					# pm = self.getPossibleMoves(i, j)
+					vm = self.getValidMoves(i, j)
+					if len(vm) != 0:
+						print(vm)
+						return False
+			return True
+		return False
+
+
+	# Returns whether it is stalemate or not
+	def isStaleMate():
+		pass
+
 	# Assuming a pawn is present at (row, col), this will give all the valid moves for the piece.
 	def getAllPawnMoves(self, color, row, col):
 		validMoves = []
