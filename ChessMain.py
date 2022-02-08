@@ -108,14 +108,14 @@ def main():
 					for m in validMoves:
 						# print(m)
 						pg.draw.circle(screen, (255, 0, 0), [m[1]*SQ_SIZE + 30, m[0]*SQ_SIZE + 30], 5, 0)
-					print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
-					print("current square: " + str(alpha[y]) + str(8-x))
-					print("selected piece: " + piece[0] + " " + piece[1])
-					print("possible moves are: ", end="")
+					# print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
+					# print("current square: " + str(alpha[y]) + str(8-x))
+					# print("selected piece: " + piece[0] + " " + piece[1])
+					# print("possible moves are: ", end="")
 					sq = [str(alpha[vm[1]]) + str(8-vm[0]) for vm in validMoves]
-					for el in sq:
-						print(el, end=" ")
-					print()
+					# for el in sq:
+					# 	print(el, end=" ")
+					# print()
 				else:
 					# the square to which we want the piece to move
 					x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
@@ -126,6 +126,11 @@ def main():
 					# at the new square and empty the old square so as to make it look like
 					# the piece moved from old square to new square.
 					if (x1, y1) != (x, y) and p != "-" and (x1, y1) in validMoves:
+						if piece[1] == "Pawn" and gs.board[x1][y1] == "-":
+							if piece[0] == "white":
+								gs.board[x1+1][y1] = "-"
+							elif piece[0] == "black":
+								gs.board[x1-1][y1] = "-"
 						gs.board[x1][y1] = p
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
@@ -133,6 +138,7 @@ def main():
 						gs.whiteToMove = not(gs.whiteToMove)
 						# gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 					drawGameState(screen, gs)
+					print(gs.moveLog[-1])
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE, x1*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+2, x*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
@@ -140,12 +146,14 @@ def main():
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+4, x*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+4, x1*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					c = "white" if gs.whiteToMove else "black"
-					print(c)
+					# print(c)
 					if gs.isCheckMate(c):
 						print("Checkmate!!!")
+						print(gs.moveLog)
 						running = False
 					if gs.isStaleMate(c):
 						print("Stalemate!!!")
+						print(gs.moveLog)
 						running = False
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)

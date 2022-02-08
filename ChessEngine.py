@@ -129,6 +129,8 @@ class GameState():
 	# Assuming a pawn is present at (row, col), this will give all the valid moves for the piece.
 	def getAllPawnMoves(self, color, row, col):
 		validMoves = []
+		if len(self.moveLog)>0:
+			lastMove = self.moveLog[-1][1]
 		if color == "white":
 			if self.isValidSquare(row-1, col) and self.getPiece(self.board[row-1][col])[1] == "Empty":
 				validMoves.append((row-1, col))
@@ -138,6 +140,8 @@ class GameState():
 				validMoves.append((row-1, col-1))
 			if self.isValidSquare(row-1, col+1) and self.getPiece(self.board[row-1][col+1])[0] == "black":
 				validMoves.append((row-1, col+1))
+			if row == 3 and abs(lastMove[0][0] - lastMove[1][0]) == 2 and self.getPiece(self.board[lastMove[1][0]][lastMove[1][1]])[1] == "Pawn":
+				validMoves.append((row-1, lastMove[0][1]))
 		if color == "black":
 			if self.isValidSquare(row+1, col) and self.getPiece(self.board[row+1][col])[1] == "Empty":
 				validMoves.append((row+1, col))
@@ -147,6 +151,8 @@ class GameState():
 				validMoves.append((row+1, col-1))
 			if self.isValidSquare(row+1, col+1) and self.getPiece(self.board[row+1][col+1])[0] == "white":
 				validMoves.append((row+1, col+1))
+			if row == 4 and abs(lastMove[0][0] - lastMove[1][0]) == 2 and self.getPiece(self.board[lastMove[1][0]][lastMove[1][1]])[1] == "Pawn":
+				validMoves.append((row+1, lastMove[0][1]))
 		return validMoves
 
 	# Assuming a rook is present at (row, col), this will give all the valid moves for the piece.
