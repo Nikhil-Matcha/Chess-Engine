@@ -80,9 +80,13 @@ def main():
 	alpha = ["A", "B", "C", "D", "E", "F", "G", "H"]
 	running = True
 	mouseClicked = False
+	reStart = False
 	drawGameState(screen, gs)
 	while running:
 		for e in pg.event.get():
+			if e.type == pg.KEYDOWN and e.key == ord("r") and reStart:
+				gs = ChessEngine.GameState()
+				drawGameState(screen, gs)
 			if e.type == pg.QUIT:
 				running = False
 				print(gs.moveLog)
@@ -138,7 +142,7 @@ def main():
 						gs.whiteToMove = not(gs.whiteToMove)
 						# gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 					drawGameState(screen, gs)
-					print(gs.moveLog[-1])
+					# print(gs.moveLog[-1])
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE, x*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE, x1*SQ_SIZE, SQ_SIZE, SQ_SIZE), 1)
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y*SQ_SIZE+2, x*SQ_SIZE+2, SQ_SIZE-5, SQ_SIZE-5), 1)
@@ -150,11 +154,13 @@ def main():
 					if gs.isCheckMate(c):
 						print("Checkmate!!!")
 						print(gs.moveLog)
-						running = False
+						print("Press R to restart!! else quit")
+						reStart = True
 					if gs.isStaleMate(c):
 						print("Stalemate!!!")
 						print(gs.moveLog)
-						running = False
+						print("Press R to restart!! else quit")
+						reStart = True
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
