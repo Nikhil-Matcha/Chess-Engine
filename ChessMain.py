@@ -151,6 +151,9 @@ def main():
 					pg.draw.rect(screen, pg.Color("yellow"), pg.Rect(y1*SQ_SIZE+4, x1*SQ_SIZE+4, SQ_SIZE-10, SQ_SIZE-10), 1)
 					c = "white" if gs.whiteToMove else "black"
 					# print(c)
+					gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+					print(gs.whiteScore)
+					print(gs.blackScore)
 					if gs.isCheckMate(c):
 						print("Checkmate!!!")
 						print(gs.moveLog)

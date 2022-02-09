@@ -24,6 +24,8 @@ class GameState():
 		]
 		self.whiteToMove = True
 		self.moveLog = []
+		self.whiteScore = 59
+		self.blackScore = 59
 
 	# to check whether a square co-ordinates are within the bounds of the board.
 	def isValidSquare(self, r, c):
@@ -43,6 +45,19 @@ class GameState():
 		else:
 			color = "none"
 		return (color, piece)
+
+	# calculates the score at a particular board position.
+	def getScore(self, board):
+		scores = {"Pawn":1, "Knight":3, "Bishop":3, "Rook":5, "Queen":9, "King":20}
+		ws, bs = 0, 0
+		for i in range(len(board)):
+			for j in range(len(board[0])):
+				p = self.getPiece(board[i][j])
+				if p[0] == "white":
+					ws += scores[p[1]]
+				elif p[0] == "black":
+					bs += scores[p[1]]
+		return (ws, bs)
 
 	# This will determine if the king is in check or not.
 	def isKingInCheck(self, color):
