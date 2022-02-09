@@ -290,6 +290,15 @@ class GameState():
 	# Assuming a king is present at (row, col), this will give all the valid moves for the piece.
 	def getAllKingMoves(self, color, row, col):
 		validMoves = []
+		prevMovedPieces = []
+		for move in self.moveLog:
+			if move[0] == color:
+				prevMovedPieces.append(move[2])
+		if "King" not in prevMovedPieces and "Rook" not in prevMovedPieces:
+			if self.board[row][col+1] == "-" and self.board[row][col+2] == "-":
+				validMoves.append((row, col+2))
+			if self.board[row][col-1] == "-" and self.board[row][col-2] == "-" and self.board[row][col-3] == "-":
+				validMoves.append((row, col-2))
 		for i in range(row-1, row+2):
 			for j in range(col-1, col+2):
 				if self.isValidSquare(i, j):

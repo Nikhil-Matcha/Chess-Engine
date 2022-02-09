@@ -135,10 +135,17 @@ def main():
 								gs.board[x1+1][y1] = "-"
 							elif piece[0] == "black":
 								gs.board[x1-1][y1] = "-"
+						if piece[1] == "King" and abs(y1-y) == 2:
+							if y1>y:
+								gs.board[x1][y1-1] = gs.board[x1][y+3]
+								gs.board[x1][y+3] = "-"
+							else:
+								gs.board[x1][y1+1] = gs.board[x1][y-4]
+								gs.board[x1][y-4] = "-"
 						gs.board[x1][y1] = p
 						gs.board[x][y] = "-"
 						print("(" + str(alpha[y]) + str(8-x) + ") --> (" + str(alpha[y1]) + str(8-x1) + ")")
-						gs.moveLog.append((piece[0], ((x, y),(x1, y1))))
+						gs.moveLog.append((piece[0], ((x, y),(x1, y1)), piece[1]))
 						gs.whiteToMove = not(gs.whiteToMove)
 						# gs.moveLog.append((piece[0], (str(alpha[y]) + str(8-x) + str(alpha[y1]) + str(8-x1))))
 					drawGameState(screen, gs)
