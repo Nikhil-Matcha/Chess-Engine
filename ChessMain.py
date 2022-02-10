@@ -81,12 +81,39 @@ def main():
 	running = True
 	mouseClicked = False
 	reStart = False
+	pawnPromotion = False
 	drawGameState(screen, gs)
 	while running:
 		for e in pg.event.get():
-			if e.type == pg.KEYDOWN and e.key == ord("r") and reStart:
+			if pawnPromotion and e.type == pg.KEYDOWN:
+				lastMove = gs.moveLog[-1]
+				(r, c) = lastMove[1][1]
+				col = lastMove[0]
+				if col == "white":
+					if e.key == ord("q"):
+						gs.board[r][c] = "Q"
+					elif e.key == ord("r"):
+						gs.board[r][c] = "R"
+					elif e.key == ord("b"):
+						gs.board[r][c] = "B"
+					elif e.key == ord("n"):
+						gs.board[r][c] = "N"
+				elif col == "black":
+					if e.key == ord("q"):
+						gs.board[r][c] = "q"
+					elif e.key == ord("r"):
+						gs.board[r][c] = "r"
+					elif e.key == ord("b"):
+						gs.board[r][c] = "b"
+					elif e.key == ord("n"):
+						gs.board[r][c] = "n"
+				print("Pawn promotion!!")
+				pawnPromotion = False
+				drawGameState(screen, gs)
+			if reStart and e.type == pg.KEYDOWN and e.key == ord("r"):
 				gs = ChessEngine.GameState()
 				drawGameState(screen, gs)
+				reStart = False
 			if e.type == pg.QUIT:
 				running = False
 				print(gs.moveLog)
@@ -135,6 +162,14 @@ def main():
 								gs.board[x1+1][y1] = "-"
 							elif piece[0] == "black":
 								gs.board[x1-1][y1] = "-"
+						if piece[1] == "Pawn" and piece[0] == "white" and x1 == 0:
+							pawnPromotion = True
+							print("Press q to promote to queen! \nPress r to promote to rook!")
+							print("Press n to promote to knight! \nPress b to promote to bishop!")
+						if piece[1] == "Pawn" and piece[0] == "black" and x1 == 7:
+							pawnPromotion = True
+							print("Press q to promote to queen! \nPress r to promote to rook!")
+							print("Press n to promote to knight! \nPress b to promote to bishop!")
 						if piece[1] == "King" and abs(y1-y) == 2:
 							if y1>y:
 								gs.board[x1][y1-1] = gs.board[x1][y+3]
