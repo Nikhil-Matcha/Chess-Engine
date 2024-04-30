@@ -67,6 +67,8 @@ def drawPieces(screen, board):
 			if piece != "-":
 				screen.blit(IMAGES[piece], pg.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
+	
+	
 
 # Main function
 def main():
@@ -83,6 +85,8 @@ def main():
 	reStart = False
 	pawnPromotion = False
 	drawGameState(screen, gs)
+	playEngine = False
+	inp = input("Do you want engine to play black? Y/N: ")
 	while running:
 		for e in pg.event.get():
 			if pawnPromotion and e.type == pg.KEYDOWN:
@@ -209,6 +213,7 @@ def main():
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
+
 
 if __name__ == '__main__':
 	main()

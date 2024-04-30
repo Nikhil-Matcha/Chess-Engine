@@ -27,6 +27,18 @@ class GameState():
 		self.whiteScore = 59
 		self.blackScore = 59
 
+	# Engine that plays random moves
+	def randomMoveAI(self):
+		x = randrange(8)
+		y = randrange(8)
+		while(self.board[x][y] == "-"):
+			x = randrange(8)
+			y = randrange(8)
+		validMoves = self.getValidMoves(x,y)
+		idx = randrange(len(validMoves))
+		move = validMoves[idx]
+		return move
+
 	# to check whether a square co-ordinates are within the bounds of the board.
 	def isValidSquare(self, r, c):
 		if r>=0 and r<8 and c>=0 and c<8:
