@@ -159,7 +159,9 @@ def main():
 	pawnPromotion = False
 	drawGameState(screen, gs)
 	playEngine = False
-	inp = input("Do you want engine to play black? Y/N: ")
+	inp = input("Do you want engine to play black? y/n: ")
+	print(inp=='y')
+	isHuman = True
 	while running:
 		for e in pg.event.get():
 			if pawnPromotion and e.type == pg.KEYDOWN:
@@ -195,42 +197,87 @@ def main():
 				running = False
 				print(gs.moveLog)
 			elif e.type == pg.MOUSEBUTTONDOWN:
-				mouseClicked = not(mouseClicked)
-				if mouseClicked:
-					# we are storing which piece we intend to move.
-					x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
-					markAPiece(gs, screen, x, y)
-					# print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
-					# print("current square: " + str(alpha[y]) + str(8-x))
-					# print("selected piece: " + piece[0] + " " + piece[1])
-					# print("possible moves are: ", end="")
-					# sq = [str(alpha[vm[1]]) + str(8-vm[0]) for vm in validMoves]
-					# for el in sq:
-					# 	print(el, end=" ")
-					# print()
-				else:
-					# the square to which we want the piece to move
-					x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+				if inp == 'y':
+					if gs.whiteToMove:
+						mouseClicked = not(mouseClicked)
+						if mouseClicked:
+							x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+							markAPiece(gs, screen, x, y)
+						else:
+							x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
 					
-					# make move from (x, y) to (x1, y1)
-					makeAMove(gs, screen, x, y, x1, y1)
+							# make move from (x, y) to (x1, y1)
+							makeAMove(gs, screen, x, y, x1, y1)
+							gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+							print(gs.whiteScore)
+							print(gs.blackScore)
+							c = "white" if gs.whiteToMove else "black"
+							if gs.isCheckMate(c):
+								print("Checkmate!!!")
+								print(gs.moveLog)
+								print("Press R to restart!! else quit")
+								reStart = True
+							if gs.isStaleMate(c):
+								print("Stalemate!!!")
+								print(gs.moveLog)
+								print("Press R to restart!! else quit")
+								reStart = True
+					else:
+						x, y, move = gs.randomMoveAI()
+						x1, y1 = move[0], move[1]
+						makeAMove(gs, screen, x, y, x1, y1)
+						gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+						print(gs.whiteScore)
+						print(gs.blackScore)
+						c = "white" if gs.whiteToMove else "black"
+						if gs.isCheckMate(c):
+							print("Checkmate!!!")
+							print(gs.moveLog)
+							print("Press R to restart!! else quit")
+							reStart = True
+						if gs.isStaleMate(c):
+							print("Stalemate!!!")
+							print(gs.moveLog)
+							print("Press R to restart!! else quit")
+							reStart = True
+
+				else:
+					mouseClicked = not(mouseClicked)
+					if mouseClicked:
+						# we are storing which piece we intend to move.
+						x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+						markAPiece(gs, screen, x, y)
+						# print("Is king in check? T/F: " + str(gs.isKingInCheck(piece[0])))
+						# print("current square: " + str(alpha[y]) + str(8-x))
+						# print("selected piece: " + piece[0] + " " + piece[1])
+						# print("possible moves are: ", end="")
+						# sq = [str(alpha[vm[1]]) + str(8-vm[0]) for vm in validMoves]
+						# for el in sq:
+						# 	print(el, end=" ")
+						# print()
+					else:
+						# the square to which we want the piece to move
+						x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+						
+						# make move from (x, y) to (x1, y1)
+						makeAMove(gs, screen, x, y, x1, y1)
 
 
-					c = "white" if gs.whiteToMove else "black"
-					# print(c)
-					gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
-					print(gs.whiteScore)
-					print(gs.blackScore)
-					if gs.isCheckMate(c):
-						print("Checkmate!!!")
-						print(gs.moveLog)
-						print("Press R to restart!! else quit")
-						reStart = True
-					if gs.isStaleMate(c):
-						print("Stalemate!!!")
-						print(gs.moveLog)
-						print("Press R to restart!! else quit")
-						reStart = True
+						c = "white" if gs.whiteToMove else "black"
+						# print(c)
+						gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+						print(gs.whiteScore)
+						print(gs.blackScore)
+						if gs.isCheckMate(c):
+							print("Checkmate!!!")
+							print(gs.moveLog)
+							print("Press R to restart!! else quit")
+							reStart = True
+						if gs.isStaleMate(c):
+							print("Stalemate!!!")
+							print(gs.moveLog)
+							print("Press R to restart!! else quit")
+							reStart = True
 		# drawGameState(screen, gs)
 		clock.tick(MAX_FPS)
 		pg.display.flip()
