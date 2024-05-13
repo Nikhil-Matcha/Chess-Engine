@@ -3,6 +3,7 @@ and displaying current state."""
 
 import pygame as pg
 import ChessEngine
+import sys
 
 
 WIDTH = HEIGHT = 512
@@ -158,10 +159,7 @@ def main():
 	reStart = False
 	pawnPromotion = False
 	drawGameState(screen, gs)
-	playEngine = False
 	inp = input("Do you want engine to play black? y/n: ")
-	print(inp=='y')
-	isHuman = True
 	while running:
 		for e in pg.event.get():
 			if pawnPromotion and e.type == pg.KEYDOWN:
@@ -215,13 +213,15 @@ def main():
 							if gs.isCheckMate(c):
 								print("Checkmate!!!")
 								print(gs.moveLog)
-								print("Press R to restart!! else quit")
+								# print("Press R to restart!! else quit")
 								reStart = True
+								sys.exit()
 							if gs.isStaleMate(c):
 								print("Stalemate!!!")
 								print(gs.moveLog)
-								print("Press R to restart!! else quit")
+								# print("Press R to restart!! else quit")
 								reStart = True
+								sys.exit()
 					else:
 						x, y, move = gs.randomMoveAI()
 						x1, y1 = move[0], move[1]
@@ -233,13 +233,15 @@ def main():
 						if gs.isCheckMate(c):
 							print("Checkmate!!!")
 							print(gs.moveLog)
-							print("Press R to restart!! else quit")
+							# print("Press R to restart!! else quit")
 							reStart = True
+							sys.exit()
 						if gs.isStaleMate(c):
 							print("Stalemate!!!")
 							print(gs.moveLog)
-							print("Press R to restart!! else quit")
+							# print("Press R to restart!! else quit")
 							reStart = True
+							sys.exit()
 
 				else:
 					mouseClicked = not(mouseClicked)
