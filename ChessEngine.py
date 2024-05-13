@@ -1,3 +1,5 @@
+import random
+
 """This stores information about the current state. It is also responsible for valid moves
 and keeps move log."""
 
@@ -26,6 +28,23 @@ class GameState():
 		self.moveLog = []
 		self.whiteScore = 59
 		self.blackScore = 59
+
+	# Engine that plays random moves
+	def randomMoveAI(self):
+		x = random.randrange(0,8)
+		y = random.randrange(0,8)
+		validMoves = self.getValidMoves(x,y)
+		print(self.getValidMoves(0, 1))
+		while(self.board[x][y] == "-" or self.board[x][y].isupper() or len(validMoves) == 0):
+			x = random.randrange(0,8)
+			y = random.randrange(0,8)
+			validMoves = self.getValidMoves(x,y)
+		print(x,y)
+		print(validMoves)
+		print(self.getValidMoves(0,1))
+		idx = random.randrange(0,len(validMoves))
+		move = validMoves[idx]
+		return x, y, move
 
 	# to check whether a square co-ordinates are within the bounds of the board.
 	def isValidSquare(self, r, c):
