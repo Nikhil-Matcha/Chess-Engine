@@ -159,7 +159,9 @@ def main():
 	reStart = False
 	pawnPromotion = False
 	drawGameState(screen, gs)
-	inp = input("Do you want engine to play black? y/n: ")
+	inp1 = input("Do you want to play against engine? y/n: ")
+	if(inp1 == 'y'):
+		inp2 = input("Do you want to play white? y/n: ")
 	while running:
 		for e in pg.event.get():
 			if pawnPromotion and e.type == pg.KEYDOWN:
@@ -195,16 +197,37 @@ def main():
 				running = False
 				print(gs.moveLog)
 			elif e.type == pg.MOUSEBUTTONDOWN:
-				if inp == 'y':
-					if gs.whiteToMove:
-						mouseClicked = not(mouseClicked)
-						if mouseClicked:
-							x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
-							markAPiece(gs, screen, x, y)
+				if inp1 == 'y':
+					if inp2 == 'y':
+						if gs.whiteToMove:
+							mouseClicked = not(mouseClicked)
+							if mouseClicked:
+								x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+								markAPiece(gs, screen, x, y)
+							else:
+								x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+						
+								# make move from (x, y) to (x1, y1)
+								makeAMove(gs, screen, x, y, x1, y1)
+								gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+								print(gs.whiteScore)
+								print(gs.blackScore)
+								c = "white" if gs.whiteToMove else "black"
+								if gs.isCheckMate(c):
+									print("Checkmate!!!")
+									print(gs.moveLog)
+									# print("Press R to restart!! else quit")
+									reStart = True
+									sys.exit()
+								if gs.isStaleMate(c):
+									print("Stalemate!!!")
+									print(gs.moveLog)
+									# print("Press R to restart!! else quit")
+									reStart = True
+									sys.exit()
 						else:
-							x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
-					
-							# make move from (x, y) to (x1, y1)
+							x, y, move = gs.randomMoveAI('black')
+							x1, y1 = move[0], move[1]
 							makeAMove(gs, screen, x, y, x1, y1)
 							gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
 							print(gs.whiteScore)
@@ -222,26 +245,54 @@ def main():
 								# print("Press R to restart!! else quit")
 								reStart = True
 								sys.exit()
+
 					else:
-						x, y, move = gs.randomMoveAI()
-						x1, y1 = move[0], move[1]
-						makeAMove(gs, screen, x, y, x1, y1)
-						gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
-						print(gs.whiteScore)
-						print(gs.blackScore)
-						c = "white" if gs.whiteToMove else "black"
-						if gs.isCheckMate(c):
-							print("Checkmate!!!")
-							print(gs.moveLog)
-							# print("Press R to restart!! else quit")
-							reStart = True
-							sys.exit()
-						if gs.isStaleMate(c):
-							print("Stalemate!!!")
-							print(gs.moveLog)
-							# print("Press R to restart!! else quit")
-							reStart = True
-							sys.exit()
+						if not(gs.whiteToMove):
+							mouseClicked = not(mouseClicked)
+							if mouseClicked:
+								x, y = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+								markAPiece(gs, screen, x, y)
+							else:
+								x1, y1 = pg.mouse.get_pos()[1]//SQ_SIZE, pg.mouse.get_pos()[0]//SQ_SIZE
+						
+								# make move from (x, y) to (x1, y1)
+								makeAMove(gs, screen, x, y, x1, y1)
+								gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+								print(gs.whiteScore)
+								print(gs.blackScore)
+								c = "white" if gs.whiteToMove else "black"
+								if gs.isCheckMate(c):
+									print("Checkmate!!!")
+									print(gs.moveLog)
+									# print("Press R to restart!! else quit")
+									reStart = True
+									sys.exit()
+								if gs.isStaleMate(c):
+									print("Stalemate!!!")
+									print(gs.moveLog)
+									# print("Press R to restart!! else quit")
+									reStart = True
+									sys.exit()
+						else:
+							x, y, move = gs.randomMoveAI('white')
+							x1, y1 = move[0], move[1]
+							makeAMove(gs, screen, x, y, x1, y1)
+							gs.whiteScore, gs.blackScore = gs.getScore(gs.board)
+							print(gs.whiteScore)
+							print(gs.blackScore)
+							c = "white" if gs.whiteToMove else "black"
+							if gs.isCheckMate(c):
+								print("Checkmate!!!")
+								print(gs.moveLog)
+								# print("Press R to restart!! else quit")
+								reStart = True
+								sys.exit()
+							if gs.isStaleMate(c):
+								print("Stalemate!!!")
+								print(gs.moveLog)
+								# print("Press R to restart!! else quit")
+								reStart = True
+								sys.exit()
 
 				else:
 					mouseClicked = not(mouseClicked)
