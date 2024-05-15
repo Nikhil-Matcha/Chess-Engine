@@ -30,18 +30,23 @@ class GameState():
 		self.blackScore = 59
 
 	# Engine that plays random moves
-	def randomMoveAI(self):
+	def randomMoveAI(self, color):
 		x = random.randrange(0,8)
 		y = random.randrange(0,8)
 		validMoves = self.getValidMoves(x,y)
-		print(self.getValidMoves(0, 1))
-		while(self.board[x][y] == "-" or self.board[x][y].isupper() or len(validMoves) == 0):
-			x = random.randrange(0,8)
-			y = random.randrange(0,8)
-			validMoves = self.getValidMoves(x,y)
+		# print(self.getValidMoves(0, 1))
+		if(color == 'black'):
+			while(self.board[x][y] == "-" or self.board[x][y].isupper() or len(validMoves) == 0):
+				x = random.randrange(0,8)
+				y = random.randrange(0,8)
+				validMoves = self.getValidMoves(x,y)
+		else:
+			while(self.board[x][y] == "-" or self.board[x][y].islower() or len(validMoves) == 0):
+				x = random.randrange(0,8)
+				y = random.randrange(0,8)
+				validMoves = self.getValidMoves(x,y)
 		print(x,y)
 		print(validMoves)
-		print(self.getValidMoves(0,1))
 		idx = random.randrange(0,len(validMoves))
 		move = validMoves[idx]
 		return x, y, move
