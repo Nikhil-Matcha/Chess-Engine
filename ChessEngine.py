@@ -83,6 +83,48 @@ class GameState():
 					bs += scores[p[1]]
 		return (ws, bs)
 
+	# evaluate the position
+	def evaluateBoard(self, board):
+		# if the opponent is checkmate, it should be evaluated more
+		if self.isCheckMate("white"):
+			return -9999
+		elif self.isCheckMate("black"):
+			return 9999
+		# if it is stalemate, the score should be zero as it is draw
+		elif self.isStaleMate('white') or self.isStaleMate('black'):
+			return 0
+
+		wp, bp, wr, br, wn, bn, wb, bb, wq, bq = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+		for i in range(8):
+			for j in range(8):
+				p = self.getPiece(board[i][j])
+				if p[0] == "white" and p[1] == "Pawn":
+					wp += 1
+				elif p[0] == "black" and p[1] == "Pawn":
+					bp += 1
+				elif p[0] == "white" and p[1] == "Knight":
+					wn += 1
+				elif p[0] == "black" and p[1] == "Knight":
+					bn += 1
+				elif p[0] == "white" and p[1] == "Bishop":
+					wb += 1
+				elif p[0] == "black" and p[1] == "Bishop":
+					bb += 1
+				elif p[0] == "white" and p[1] == "Rook":
+					wr += 1
+				elif p[0] == "black" and p[1] == "Rook":
+					br += 1
+				elif p[0] == "white" and p[1] == "Queen":
+					wq += 1
+				elif p[0] == "black" and p[1] == "Queen":
+					bq += 1
+
+		material = 100*(wp-bp)+320*(wn-bn)+330*(wb-bb)+500*(wr-br)+900*(wq-bq)
+
+		# to do
+
+
+
 	# This will determine if the king is in check or not.
 	def isKingInCheck(self, color):
 		for i in range(len(self.board)):
